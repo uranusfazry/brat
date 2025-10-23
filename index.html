@@ -6,7 +6,10 @@
     <title>Brat Generator 💅</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Font untuk Brat Generator -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font untuk Watermark (BARU) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -638,6 +641,155 @@
             75% { transform: translateX(8px); }
         }
 
+        /* =================================== */
+        /* == AWAL CSS WATERMARK (DISISIPKAN) == */
+        /* =================================== */
+
+        /* Keyframes untuk animasi */
+        @keyframes slideUpFadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes logo3DFlip {
+            0% { transform: rotateY(0deg); filter: brightness(1); }
+            50% { transform: rotateY(180deg); filter: brightness(2) drop-shadow(0 0 8px var(--glow-color)); }
+            100% { transform: rotateY(360deg); filter: brightness(1); }
+        }
+        
+        /* --- PENYESUAIAN TEMA WATERMARK --- */
+        /* Variabel warna watermark sekarang diatur oleh tema <body> */
+        
+        body.light #futuristic-watermark {
+            --glow-color: var(--pink-vivid); /* #ff6baf */
+            --background-color: var(--card-bg-light); /* rgba(255, 255, 255, 0.75) */
+            --border-color: rgba(255, 204, 230, 0.4); /* Border kartu terang */
+            --text-color: var(--text-primary-light); /* #1a0814 */
+            --particle-base-hue: 330; /* Hue dari pink-vivid */
+            --particle-base-lightness: 60;
+        }
+
+        body.dark #futuristic-watermark {
+            --glow-color: var(--purple-vivid); /* #b37bff */
+            --background-color: var(--card-bg-dark); /* rgba(30, 15, 25, 0.6) */
+            --border-color: rgba(228, 201, 255, 0.2); /* Border kartu gelap */
+            --text-color: var(--text-primary-dark); /* #fdf5f9 */
+            --particle-base-hue: 267; /* Hue dari purple-vivid */
+            --particle-base-lightness: 70;
+        }
+        /* --- AKHIR PENYESUAIAN TEMA --- */
+
+
+        /* Kontainer utama watermark */
+        #futuristic-watermark {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            padding: 8px 15px;
+            min-width: 212px;
+            background: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 500;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(var(--glow-color), 0.15), 
+                        0 0 30px rgba(var(--glow-color), 0.1),
+                        inset 0 0 10px rgba(var(--glow-color), 0.1);
+            z-index: 9999;
+            /* cursor: pointer; (Dihapus agar tidak membingungkan, tema di-handle oleh toggle utama) */
+            user-select: none;
+            overflow: hidden;
+            opacity: 0;
+            animation: slideUpFadeIn 1s ease-out 0.5s forwards;
+            transition: background-color 0.5s ease, color 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        
+        #futuristic-watermark:hover {
+            transform: translateY(-5px) scale(1.03);
+            border-color: rgba(var(--glow-color), 0.8); /* Dibuat lebih cerah saat hover */
+            box-shadow: 0 0 25px rgba(var(--glow-color), 0.4), 
+                        0 0 50px rgba(var(--glow-color), 0.25),
+                        inset 0 0 12px rgba(var(--glow-color), 0.2);
+        }
+        
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .f-content-wrapper {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 18px;
+        }
+
+        .f-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .f-content.hidden {
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+            transform: scale(0.9);
+        }
+
+        .f-logo-container {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.4s ease;
+            flex-shrink: 0;
+        }
+
+        .f-logo-container.reacting {
+            animation: logo3DFlip 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .f-logo-container svg {
+            width: 100%;
+            height: 100%;
+            stroke: var(--glow-color); /* Menggunakan glow-color yang sudah disesuaikan */
+            stroke-width: 8;
+            transition: stroke 0.5s ease;
+        }
+        
+        #f-watermark-text, #f-follow-message {
+            transition: color 0.5s ease;
+        }
+
+        #f-watermark-text {
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        #f-follow-message {
+            font-size: 11px; /* Ukuran font dikecilkan agar muat */
+            letter-spacing: 0.2px; /* Spasi antar huruf dikurangi */
+            font-weight: 700;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        /* ================================= */
+        /* == AKHIR CSS WATERMARK == */
+        /* ================================= */
+
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .header-nav {
@@ -679,6 +831,11 @@
             .subtitle {
                 font-size: 14px;
             }
+            
+            /* Sembunyikan watermark di layar kecil agar tidak menutupi konten */
+            #futuristic-watermark {
+                display: none;
+            }
         }
 
         @media (max-width: 480px) {
@@ -693,13 +850,15 @@
     </style>
 </head>
 <body class="light">
-    <!-- Background Orbs --><div class="background-orbs">
+    <!-- Background Orbs -->
+    <div class="background-orbs">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
         <div class="orb orb-3"></div>
     </div>
 
-    <!-- Header Navigation --><div class="header-nav">
+    <!-- Header Navigation -->
+    <div class="header-nav">
         <div class="logo">
             <span>Brat Generator</span>
             <span>💅</span>
@@ -709,15 +868,19 @@
         </div>
     </div>
 
-    <!-- Main Container --><div class="container">
+    <!-- Main Container -->
+    <div class="container">
         <div class="card">
-            <!-- Header --><div class="header">
+            <!-- Header -->
+            <div class="header">
                 <h1 class="title">Buat Stiker Brat</h1>
                 <p class="subtitle">Buat stiker aesthetic dalam hitungan detik ✨</p>
             </div>
 
-            <!-- Form --><div class="form-section">
-                <!-- Text Input --><div class="input-wrapper">
+            <!-- Form -->
+            <div class="form-section">
+                <!-- Text Input -->
+                <div class="input-wrapper">
                     <label class="input-label">Teks Kamu</label>
                     <input
                         type="text"
@@ -729,7 +892,8 @@
                     >
                 </div>
 
-                <!-- Color Selector --><div class="input-wrapper">
+                <!-- Color Selector -->
+                <div class="input-wrapper">
                     <label class="input-label">Pilih Warna</label>
                     <div class="color-selector">
                         <div class="color-select-btn" onclick="toggleColorDropdown()">
@@ -800,19 +964,23 @@
                     </div>
                 </div>
 
-                <!-- Generate Button --><button class="btn-generate" onclick="generateSticker()">
+                <!-- Generate Button -->
+                <button class="btn-generate" onclick="generateSticker()">
                     <i class="fas fa-wand-magic-sparkles"></i>
                     <span>Buat Stiker</span>
                 </button>
 
-                <!-- Loading State --><div class="loading-state" id="loadingState">
+                <!-- Loading State -->
+                <div class="loading-state" id="loadingState">
                     <div class="loading-spinner"></div>
                     <span>Membuat stiker...</span>
                 </div>
 
-                <!-- Error Message --><div class="error-message" id="errorMessage"></div>
+                <!-- Error Message -->
+                <div class="error-message" id="errorMessage"></div>
 
-                <!-- Result --><div class="result-wrapper" id="resultWrapper">
+                <!-- Result -->
+                <div class="result-wrapper" id="resultWrapper">
                     <div class="result-header">
                         <span>Stiker Brat Kamu</span>
                         <span>💅✨</span>
@@ -827,6 +995,7 @@
         </div>
     </div>
 
+    <!-- Script untuk Brat Generator -->
     <script>
         // Mapping untuk warna yang mungkin perlu penyesuaian untuk API jika API tidak langsung mengenali nama warna Tailwind
         const colorMappingForAPI = {
@@ -997,8 +1166,142 @@
             }
         });
     </script>
+
+    <!-- Script untuk Watermark (DISISIPKAN) -->
+    <script>
+    (function() {
+        function initializeWatermark() {
+            const watermarkHTML = `
+                <div id="futuristic-watermark" title="Design by ©URANUSFAZRY">
+                <canvas id="particle-canvas"></canvas>
+                <div class="f-content-wrapper">
+                    <div id="f-main-content" class="f-content">
+                    <div class="f-logo-container">
+                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 20 L80 20 L80 80 L20 80 Z" stroke-opacity="0.5"/>
+                            <path d="M50 5 L95 50 L50 95 L5 50 Z"/>
+                        </svg>
+                    </div>
+                    <span id="f-watermark-text">©URANUSFAZRY</span>
+                    </div>
+                    <div id="f-follow-content" class="f-content hidden">
+                        <span id="f-follow-message"></span>
+                    </div>
+                </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', watermarkHTML);
+
+            const watermarkEl = document.getElementById('futuristic-watermark');
+            const textEl = document.getElementById('f-watermark-text');
+            const logoEl = watermarkEl.querySelector('.f-logo-container');
+            const mainContentEl = document.getElementById('f-main-content');
+            const followContentEl = document.getElementById('f-follow-content');
+            const followMessageEl = document.getElementById('f-follow-message');
+            
+            let isAnimating = false;
+            let autoPlayInterval = null;
+            let currentSequence = 0;
+            const sequenceActions = ['scramble', 'logo', 'youtube', 'tiktok', 'reset'];
+
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            const resizeCanvas = () => { if (watermarkEl) { canvas.width = watermarkEl.offsetWidth; canvas.height = watermarkEl.offsetHeight; } };
+            class Particle {
+                constructor() { this.reset(); this.baseSpeedX = (Math.random() - 0.5) * 0.5; this.baseSpeedY = (Math.random() - 0.5) * 0.5; this.speedX = this.baseSpeedX; this.speedY = this.baseSpeedY; }
+                update() {
+                    this.x += this.speedX; this.y += this.speedY; this.opacity -= this.fadeSpeed;
+                    if (this.opacity <= 0 || this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) { this.reset(); }
+                }
+                draw() {
+                    const style = getComputedStyle(watermarkEl);
+                    const hue = style.getPropertyValue('--particle-base-hue').trim();
+                    const lightness = parseFloat(style.getPropertyValue('--particle-base-lightness').trim());
+                    ctx.globalAlpha = this.opacity;
+                    ctx.fillStyle = `hsl(${hue}, 100%, ${lightness + this.opacity * 40}%)`;
+                    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+                }
+                reset() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.opacity = Math.random() * 0.5 + 0.2; this.size = Math.random() * 1.5 + 0.5; this.fadeSpeed = Math.random() * 0.015 + 0.005; }
+            }
+            const animateParticles = () => { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); ctx.globalAlpha = 1.0; requestAnimationFrame(animateParticles); };
+            
+            const textScramble = (el) => {
+                const originalText = "©URANUSFAZRY";
+                const chars = '!<>*#{}[]'; let frame = 0; isAnimating = true;
+                const interval = setInterval(() => {
+                    el.innerText = originalText.split('').map((char, i) => { const p = (frame - i * 2) / 15; if (p < 0) return ' '; if (p > 1) return char; return chars[Math.floor(Math.random() * chars.length)]; }).join('');
+                    if (frame >= originalText.length * 2 + 15) { clearInterval(interval); el.innerText = originalText; isAnimating = false; } frame++;
+                }, 30);
+            };
+
+            const typewriter = (el, text) => {
+                let i = 0; el.innerHTML = ""; isAnimating = true;
+                const interval = setInterval(() => {
+                    if (i < text.length) { el.innerHTML += text.charAt(i); i++; } 
+                    else { clearInterval(interval); isAnimating = false; }
+                }, 50);
+            };
+
+            const runAutoSequence = () => {
+                if (isAnimating) return;
+                const action = sequenceActions[currentSequence];
+                switch (action) {
+                    case 'scramble': textScramble(textEl); break;
+                    case 'logo':
+                        isAnimating = true;
+                        logoEl.classList.add('reacting');
+                        logoEl.addEventListener('animationend', () => { logoEl.classList.remove('reacting'); isAnimating = false; }, { once: true });
+                        break;
+                    case 'youtube':
+                        isAnimating = true;
+                        mainContentEl.classList.add('hidden');
+                        setTimeout(() => {
+                            followContentEl.classList.remove('hidden');
+                            typewriter(followMessageEl, "Follow uranusfazry YouTube");
+                        }, 400);
+                        break;
+                    case 'tiktok': 
+                        typewriter(followMessageEl, "Follow uranusfazry TikTok"); 
+                        break;
+                    case 'reset':
+                        isAnimating = true;
+                        followContentEl.classList.add('hidden');
+                        setTimeout(() => {
+                            mainContentEl.classList.remove('hidden');
+                            isAnimating = false;
+                        }, 400);
+                        break;
+                }
+                currentSequence = (currentSequence + 1) % sequenceActions.length;
+            };
+
+            const startAutoPlay = () => {
+                if (autoPlayInterval) clearInterval(autoPlayInterval);
+                runAutoSequence();
+                autoPlayInterval = setInterval(runAutoSequence, 3500);
+            };
+
+            // DIHAPUS: Event listener klik untuk toggle tema watermark.
+            // Tema sekarang dikontrol oleh body.
+            // watermarkEl.addEventListener('click', () => { watermarkEl.classList.toggle('light-mode'); });
+            
+            const init = () => {
+                resizeCanvas();
+                for (let i = 0; i < 40; i++) particles.push(new Particle());
+                animateParticles();
+                window.addEventListener('resize', resizeCanvas);
+                startAutoPlay();
+            };
+            init();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeWatermark);
+        } else {
+            initializeWatermark();
+        }
+    })();
+    </script>
 </body>
 </html>
-
-
-
