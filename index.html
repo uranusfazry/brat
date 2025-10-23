@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brat Generator 💅</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Light Mode */
+            --bg-primary-light: #fdf5f9;
+            --bg-secondary-light: #fff0f7;
+            --card-bg-light: rgba(255, 255, 255, 0.75);
+            --text-primary-light: #1a0814;
+            --text-secondary-light: #8b5a6f;
+            
+            /* Dark Mode */
+            --bg-primary-dark: #0d0510;
+            --bg-secondary-dark: #1a0d18;
+            --card-bg-dark: rgba(30, 15, 25, 0.6);
+            --text-primary-dark: #fdf5f9;
+            --text-secondary-dark: #d4b5c7;
+            
+            /* Accent Colors */
+            --pink-pastel: #ffcce6;
+            --pink-vivid: #ff6baf;
+            --purple-soft: #e4c9ff;
+            --purple-vivid: #b37bff;
+            --black-elegant: #1a0814;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #ff6baf 0%, #b37bff 100%);
+            --gradient-soft: linear-gradient(135deg, #ffcce6 0%, #e4c9ff 100%);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body.light {
+            background: radial-gradient(ellipse at top left, var(--bg-secondary-light) 0%, var(--bg-primary-light) 50%, #fff5fb 100%);
+            color: var(--text-primary-light);
+        }
+
+        body.dark {
+            background: radial-gradient(ellipse at top left, var(--bg-secondary-dark) 0%, var(--bg-primary-dark) 50%, #150a12 100%);
+            color: var(--text-primary-dark);
+        }
+
+        /* Animated Background Orbs */
+        .background-orbs {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: orbFloat 25s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--gradient-primary);
+            top: -10%;
+            left: -5%;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 350px;
+            height: 350px;
+            background: var(--gradient-soft);
+            bottom: -5%;
+            right: -5%;
+            animation-delay: 8s;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #ff85c0 0%, #d4a5ff 100%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: 15s;
+        }
+
+        body.dark .orb {
+            opacity: 0.25;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(40px, -40px) scale(1.1); }
+            50% { transform: translate(-30px, 30px) scale(0.95); }
+            75% { transform: translate(30px, 40px) scale(1.05); }
+        }
+
+        /* Header Navigation */
+        .header-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+
+        body.light .header-nav {
+            background: rgba(255, 255, 255, 0.4);
+            border-bottom: 1px solid rgba(255, 204, 230, 0.2);
+        }
+
+        body.dark .header-nav {
+            background: rgba(13, 5, 16, 0.4);
+            border-bottom: 1px solid rgba(228, 201, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            width: 56px;
+            height: 28px;
+            border-radius: 50px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        body.light .theme-toggle {
+            background: linear-gradient(135deg, rgba(255, 204, 230, 0.4), rgba(228, 201, 255, 0.4));
+            box-shadow: 0 4px 20px rgba(255, 107, 175, 0.2);
+        }
+
+        body.dark .theme-toggle {
+            background: linear-gradient(135deg, rgba(255, 204, 230, 0.1), rgba(228, 201, 255, 0.1));
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+        }
+
+        .theme-toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+        }
+
+        body.dark .theme-toggle-slider {
+            transform: translateX(28px);
+            background: linear-gradient(135deg, #2a1f3d, #1a0d2e);
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 520px;
+            margin: 0 auto;
+            padding: 100px 24px 60px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Main Card */
+        .card {
+            width: 100%;
+            backdrop-filter: blur(30px) saturate(180%);
+            border-radius: 28px;
+            padding: 44px 36px;
+            position: relative;
+            overflow: hidden;
+            animation: cardEntrance 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.light .card {
+            background: var(--card-bg-light);
+            border: 2px solid rgba(255, 204, 230, 0.4);
+            box-shadow: 0 8px 32px rgba(255, 107, 175, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+        }
+
+        body.dark .card {
+            background: var(--card-bg-dark);
+            border: 2px solid rgba(228, 201, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+        }
+
+        @keyframes cardEntrance {
+            0% { opacity: 0; transform: translateY(40px) scale(0.96); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .title {
+            font-size: 38px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1.2px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            font-weight: 400;
+            opacity: 0.75;
+            letter-spacing: 0.2px;
+        }
+
+        body.light .subtitle { color: var(--text-secondary-light); }
+        body.dark .subtitle { color: var(--text-secondary-dark); }
+
+        /* Form Section */
+        .form-section {
+            position: relative;
+            z-index: 1;
+        }
+
+        .input-wrapper {
+            margin-bottom: 24px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            letter-spacing: 0.3px;
+        }
+
+        body.light .input-label { color: var(--text-primary-light); }
+        body.dark .input-label { color: var(--text-primary-dark); }
+
+        /* Text Input */
+        .text-input {
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 16px;
+            border: 2px solid transparent;
+            font-size: 15px;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+        }
+
+        body.light .text-input {
+            background: rgba(255, 255, 255, 0.8);
+            color: var(--text-primary-light);
+            border-color: rgba(255, 204, 230, 0.5);
+        }
+
+        body.dark .text-input {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary-dark);
+            border-color: rgba(228, 201, 255, 0.3);
+        }
+
+        .text-input:focus {
+            transform: translateY(-2px);
+            border-color: var(--pink-vivid);
+        }
+
+        body.light .text-input:focus {
+            box-shadow: 0 8px 24px rgba(255, 107, 175, 0.2);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        body.dark .text-input:focus {
+            box-shadow: 0 8px 24px rgba(179, 123, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .text-input::placeholder {
+            opacity: 0.5;
+            font-weight: 400;
+        }
+
+        /* Color Selector - Minimalist Dropdown Style */
+        .color-selector {
+            position: relative;
+        }
+
+        .color-select-btn {
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 16px;
+            border: 2px solid transparent;
+            font-size: 15px;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.light .color-select-btn {
+            background: rgba(255, 255, 255, 0.8);
+            color: var(--text-primary-light);
+            border-color: rgba(255, 204, 230, 0.5);
+        }
+
+        body.dark .color-select-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary-dark);
+            border-color: rgba(228, 201, 255, 0.3);
+        }
+
+        .color-select-btn:hover {
+            border-color: var(--pink-vivid);
+        }
+
+        .color-display {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .color-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .color-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            border-radius: 16px;
+            padding: 12px;
+            backdrop-filter: blur(20px);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        body.light .color-dropdown {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid rgba(255, 204, 230, 0.5);
+            box-shadow: 0 12px 40px rgba(255, 107, 175, 0.2);
+        }
+
+        body.dark .color-dropdown {
+            background: rgba(30, 15, 25, 0.95);
+            border: 2px solid rgba(228, 201, 255, 0.3);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .color-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .color-option {
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        body.light .color-option {
+            color: var(--text-primary-light);
+        }
+
+        body.dark .color-option {
+            color: var(--text-primary-dark);
+        }
+
+        .color-option:hover {
+            background: rgba(255, 107, 175, 0.1);
+            transform: translateX(4px);
+        }
+
+        .color-option.active {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .color-option:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Generate Button */
+        .btn-generate {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            background: var(--gradient-primary);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 24px rgba(255, 107, 175, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+            letter-spacing: 0.3px;
+            margin-top: 28px;
+        }
+
+        .btn-generate::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.4) 100%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .btn-generate:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 36px rgba(255, 107, 175, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+        }
+
+        .btn-generate:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-generate i {
+            margin-right: 8px;
+        }
+
+        /* Loading State */
+        .loading-state {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        .loading-state.active {
+            display: block;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 3px solid rgba(255, 107, 175, 0.2);
+            border-top-color: var(--pink-vivid);
+            border-radius: 50%;
+            animation: spinLoader 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spinLoader {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Result Container */
+        .result-wrapper {
+            display: none;
+            margin-top: 28px;
+            padding: 28px;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            animation: resultSlideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.light .result-wrapper {
+            background: rgba(255, 204, 230, 0.15);
+            border: 2px solid rgba(255, 204, 230, 0.3);
+        }
+
+        body.dark .result-wrapper {
+            background: rgba(228, 201, 255, 0.08);
+            border: 2px solid rgba(228, 201, 255, 0.2);
+        }
+
+        .result-wrapper.active {
+            display: block;
+        }
+
+        @keyframes resultSlideUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-header {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .result-image {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+        }
+
+        /* Download Button */
+        .btn-download {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Error Message */
+        .error-message {
+            display: none;
+            margin-top: 16px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            animation: errorShake 0.5s ease;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        @keyframes errorShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-nav {
+                padding: 16px 20px;
+            }
+
+            .logo {
+                font-size: 17px;
+            }
+
+            .theme-toggle {
+                width: 52px;
+                height: 26px;
+            }
+
+            .theme-toggle-slider {
+                width: 20px;
+                height: 20px;
+                font-size: 10px;
+            }
+
+            body.dark .theme-toggle-slider {
+                transform: translateX(26px);
+            }
+
+            .container {
+                padding: 90px 20px 40px;
+            }
+
+            .card {
+                padding: 32px 24px;
+                border-radius: 24px;
+            }
+
+            .title {
+                font-size: 32px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 28px;
+            }
+
+            .card {
+                padding: 28px 20px;
+            }
+        }
+    </style>
+</head>
+<body class="light">
+    <!-- Background Orbs --><div class="background-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Header Navigation --><div class="header-nav">
+        <div class="logo">
+            <span>Brat Generator</span>
+            <span>💅</span>
+        </div>
+        <div class="theme-toggle" onclick="toggleTheme()">
+            <div class="theme-toggle-slider">🌞</div>
+        </div>
+    </div>
+
+    <!-- Main Container --><div class="container">
+        <div class="card">
+            <!-- Header --><div class="header">
+                <h1 class="title">Buat Stiker Brat</h1>
+                <p class="subtitle">Buat stiker aesthetic dalam hitungan detik ✨</p>
+            </div>
+
+            <!-- Form --><div class="form-section">
+                <!-- Text Input --><div class="input-wrapper">
+                    <label class="input-label">Teks Kamu</label>
+                    <input
+                        type="text"
+                        id="bratText"
+                        class="text-input"
+                        placeholder="Masukkan teks..."
+                        maxlength="50"
+                        autocomplete="off"
+                    >
+                </div>
+
+                <!-- Color Selector --><div class="input-wrapper">
+                    <label class="input-label">Pilih Warna</label>
+                    <div class="color-selector">
+                        <div class="color-select-btn" onclick="toggleColorDropdown()">
+                            <div class="color-display">
+                                <div class="color-dot" id="selectedColorDot" style="background: linear-gradient(135deg, #10b981, #059669);"></div>
+                                <span id="selectedColorName">Emerald</span>
+                            </div>
+                            <i class="fas fa-chevron-down" style="opacity: 0.5; font-size: 12px;"></i>
+                        </div>
+                        <div class="color-dropdown" id="colorDropdown">
+                            <div class="color-option active" data-color="green" data-name="Emerald" data-gradient="linear-gradient(135deg, #10b981, #059669)">
+                                <div class="color-dot" style="background: linear-gradient(135deg, #10b981, #059669);"></div>
+                                <span>Emerald</span>
+                            </div>
+                            <div class="color-option" data-color="red" data-name="Cherry" data-gradient="linear-gradient(135deg, #ef4444, #dc2626)">
+                                <div class="color-dot" style="background: linear-gradient(135deg, #ef4444, #dc2626);"></div>
+                                <span>Cherry</span>
+                            </div>
+                            <div class="color-option" data-color="blue" data-name="Ocean" data-gradient="linear-gradient(135deg, #3b82f6, #2563eb)">
+                                <div class="color-dot" style="background: linear-gradient(135deg, #3b82f6, #2563eb);"></div>
+                                <span>Ocean</span>
+                            </div>
+                            <div class="color-option" data-color="purple" data-name="Lavender" data-gradient="linear-gradient(135deg, #8b5cf6, #7c3aed)">
+                                <div class="color-dot" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);"></div>
+                                <span>Lavender</span>
+                            </div>
+                            <div class="color-option" data-color="orange" data-name="Sunset" data-gradient="linear-gradient(135deg, #f59e0b, #d97706)">
+                                <div class="color-dot" style="background: linear-gradient(135deg, #f59e0b, #d97706);"></div>
+                                <span>Sunset</span>
+                            </div>
+                            <div class="color-option" data-color="hotpink" data-name="Bubblegum" data-gradient="linear-gradient(135deg, #ec4899, #db2777)">
+                                <div class="color-dot" style="background: linear-gradient(135deg, #ec4899, #db2777);"></div>
+                                <span>Bubblegum</span>
+                            </div>
+                            <div class="color-option" data-color="yellow" data-name="Sunshine" data-gradient="linear-gradient(135deg, #fbbf24, #f59e0b)">
+                                <div class="color-dot" style="background: linear-gradient(135deg, #fbbf24, #f59e0b);"></div>
+                                <span>Sunshine</span>
+                            </div>
+                            <div class="color-option" data-color="teal" data-name="Aquamarine" data-gradient="linear-gradient(135deg, #14b8a6, #0d9488)">
+                                <div class="color-dot" style="background: linear-gradient(135deg, #14b8a6, #0d9488);"></div>
+                                <span>Aquamarine</span>
+                            </div>
+                            <div class="color-option" data-color="cyan" data-name="Sky" data-gradient="linear-gradient(135deg, #06b6d4, #0891b2)">
+                                <div class="color-dot" style="background: linear-gradient(135deg, #06b6d4, #0891b2);"></div>
+                                <span>Sky</span>
+                            </div>
+                            <div class="color-option" data-color="lime" data-name="Lime" data-gradient="linear-gradient(135deg, #84cc16, #65a30d)">
+                                <div class="color-dot" style="background: linear-gradient(135deg, #84cc16, #65a30d);"></div>
+                                <span>Lime</span>
+                            </div>
+                            <div class="color-option" data-color="forest" data-name="Forest" data-gradient="linear-gradient(135deg, #34d399, #059669)">
+                                <div class="color-dot" style="background: linear-gradient(135deg, #34d399, #059669);"></div>
+                                <span>Forest</span>
+                            </div>
+                            <div class="color-option" data-color="pink" data-name="Cotton Candy" data-gradient="linear-gradient(135deg, #f9a8d4, #f472b6)">
+                                <div class="color-dot" style="background: linear-gradient(135deg, #f9a8d4, #f472b6);"></div>
+                                <span>Cotton Candy</span>
+                            </div>
+                            <div class="color-option" data-color="gray" data-name="Charcoal" data-gradient="linear-gradient(135deg, #6b7280, #4b5563)">
+                                <div class="color-dot" style="background: linear-gradient(135deg, #6b7280, #4b5563);"></div>
+                                <span>Charcoal</span>
+                            </div>
+                            <div class="color-option" data-color="black" data-name="Noir" data-gradient="linear-gradient(135deg, #1f2937, #111827)">
+                                <div class="color-dot" style="background: linear-gradient(135deg, #1f2937, #111827);"></div>
+                                <span>Noir</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generate Button --><button class="btn-generate" onclick="generateSticker()">
+                    <i class="fas fa-wand-magic-sparkles"></i>
+                    <span>Buat Stiker</span>
+                </button>
+
+                <!-- Loading State --><div class="loading-state" id="loadingState">
+                    <div class="loading-spinner"></div>
+                    <span>Membuat stiker...</span>
+                </div>
+
+                <!-- Error Message --><div class="error-message" id="errorMessage"></div>
+
+                <!-- Result --><div class="result-wrapper" id="resultWrapper">
+                    <div class="result-header">
+                        <span>Stiker Brat Kamu</span>
+                        <span>💅✨</span>
+                    </div>
+                    <img id="resultImage" class="result-image" alt="Brat Sticker">
+                    <button class="btn-download" onclick="downloadSticker()">
+                        <i class="fas fa-download"></i>
+                        <span>Unduh Stiker</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mapping untuk warna yang mungkin perlu penyesuaian untuk API jika API tidak langsung mengenali nama warna Tailwind
+        const colorMappingForAPI = {
+            "green": "emerald", // 'green' pada data-color untuk 'Emerald' (Ini sepertinya BISA)
+            "red": "red",       // (BISA)
+            "blue": "blue",     // (BISA)
+            "purple": "purple", // (Lebih aman daripada 'violet')
+            "orange": "orange", // (BISA)
+            "hotpink": "pink",  // (BISA)
+            "yellow": "yellow", // (BISA)
+            "teal": "teal",     // (BISA)
+            "cyan": "cyan",     // (BISA)
+            "lime": "lime",     // (BISA)
+            "forest": "green",  // (Ini BISA)
+            "pink": "pink",     // (BISA)
+            "gray": "gray",     // (BISA)
+            "black": "black"    // (BISA)
+        };
+
+
+        let selectedColor = 'green'; // Default selected color (corresponds to Emerald)
+
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const slider = document.querySelector('.theme-toggle-slider');
+            
+            if (body.classList.contains('light')) {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                slider.textContent = '🌙';
+            } else {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                slider.textContent = '🌞';
+            }
+        }
+
+        // Toggle Color Dropdown
+        function toggleColorDropdown() {
+            const dropdown = document.getElementById('colorDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const selector = document.querySelector('.color-selector');
+            const dropdown = document.getElementById('colorDropdown');
+            
+            if (!selector.contains(event.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // Color Selection
+        const colorOptions = document.querySelectorAll('.color-option');
+        colorOptions.forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // Remove active class from all options
+                colorOptions.forEach(opt => opt.classList.remove('active'));
+                
+                // Add active class to selected option
+                this.classList.add('active');
+                
+                // Update selected color
+                selectedColor = this.getAttribute('data-color'); // Ini akan menjadi kunci untuk mapping API
+                const colorName = this.getAttribute('data-name');
+                const colorGradient = this.getAttribute('data-gradient');
+                
+                // Update display
+                document.getElementById('selectedColorName').textContent = colorName;
+                document.getElementById('selectedColorDot').style.background = colorGradient;
+                
+                // Close dropdown
+                document.getElementById('colorDropdown').classList.remove('active');
+            });
+        });
+
+        // Generate Sticker
+        async function generateSticker() {
+            const textInput = document.getElementById('bratText');
+            const text = textInput.value.trim();
+            
+            const loadingState = document.getElementById('loadingState');
+            const resultWrapper = document.getElementById('resultWrapper');
+            const errorMessage = document.getElementById('errorMessage');
+            const generateBtn = document.querySelector('.btn-generate');
+
+            // Validation
+            if (!text) {
+                showError('Masukkan teks terlebih dahulu! ✨');
+                textInput.focus();
+                return;
+            }
+
+            // Reset states
+            errorMessage.classList.remove('active');
+            resultWrapper.classList.remove('active');
+            loadingState.classList.add('active');
+            generateBtn.disabled = true;
+
+            try {
+                // Ambil nilai warna yang sesuai untuk API dari mapping
+                const apiColor = colorMappingForAPI[selectedColor] || selectedColor; // Fallback ke selectedColor jika tidak ada di mapping
+                const apiUrl = `https://aqul-brat.hf.space/?text=${encodeURIComponent(text)}&background=${apiColor}&color=black`;
+                
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`Gagal membuat stiker: ${response.statusText}`);
+                }
+                
+                const blob = await response.blob();
+                const imageUrl = URL.createObjectURL(blob);
+                
+                // Display result
+                document.getElementById('resultImage').src = imageUrl;
+                
+                // Smooth transition
+                setTimeout(() => {
+                    loadingState.classList.remove('active');
+                    resultWrapper.classList.add('active');
+                    generateBtn.disabled = false;
+                }, 300);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                loadingState.classList.remove('active');
+                showError(`Terjadi kesalahan. Coba lagi! (${error.message}) 💔`);
+                generateBtn.disabled = false;
+            }
+        }
+
+        // Download Sticker
+        function downloadSticker() {
+            const image = document.getElementById('resultImage');
+            
+            if (!image.src) {
+                showError('Tidak ada stiker untuk diunduh!');
+                return;
+            }
+            
+            const link = document.createElement('a');
+            link.href = image.src;
+            link.download = `brat-stiker-${Date.now()}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Show Error
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorMessage.classList.add('active');
+            
+            setTimeout(() => {
+                errorMessage.classList.remove('active');
+            }, 4000);
+        }
+
+        // Enter Key Support
+        document.getElementById('bratText').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                generateSticker();
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
