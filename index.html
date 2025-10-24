@@ -11,6 +11,8 @@
     <!-- Font untuk Watermark (BARU) -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- CSS ASLI DARI WEBSITE ANDA (TIDAK DIUBAH) -->
     <style>
         * {
             margin: 0;
@@ -215,9 +217,9 @@
             margin: 0 auto;
             padding: 100px 24px 60px;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            /* display: flex; (Dihapus agar banner di atas card bisa tampil) */
+            /* align-items: center; */
+            /* justify-content: center; */
         }
 
         /* Main Card */
@@ -848,8 +850,137 @@
             }
         }
     </style>
+
+    <!-- ============================================= -->
+    <!-- === AWAL CSS IKLAN (INTERSTITIAL & BANNER) === -->
+    <!-- ============================================= -->
+    <style>
+        /* CSS untuk Fullscreen Interstitial Ad */
+        #interstitial-backdrop {
+            position: fixed;
+            inset: 0; /* top: 0; right: 0; bottom: 0; left: 0; */
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.5s;
+        }
+
+        #interstitial-ad {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 320px; /* Lebar 300px + 20px padding */
+            transform: translate(-50%, -50%) scale(0.9);
+            z-index: 2001;
+            background: #1a0d18; /* Background gelap, senada dengan tema */
+            padding: 10px;
+            border-radius: 16px;
+            border: 2px solid rgba(228, 201, 255, 0.2);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #interstitial-close {
+            position: absolute;
+            top: -16px;
+            right: -16px;
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 32px; /* Sesuaikan agar 'x' ditengah */
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            font-family: Arial, sans-serif;
+            z-index: 10;
+        }
+
+        #interstitial-close:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 8px 20px rgba(255, 107, 175, 0.45);
+        }
+
+        /* Status Aktif untuk Interstitial (dikontrol JS) */
+        #interstitial-backdrop.active,
+        #interstitial-ad.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #interstitial-ad.active {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* CSS untuk Responsive Banner Wrappers */
+        .ad-wrapper-desktop {
+            display: block; /* Tampil di Desktop */
+            text-align: center;
+            min-height: 90px;
+            margin: 0 auto 20px;
+            max-width: 728px;
+        }
+        .ad-wrapper-mobile {
+            display: none; /* Sembunyi di Desktop */
+            text-align: center;
+            min-height: 60px;
+            margin: 0 auto 20px;
+            max-width: 468px;
+        }
+
+        @media (max-width: 768px) {
+            .ad-wrapper-desktop { display: none; }
+            .ad-wrapper-mobile { display: block; }
+        }
+
+         @media (max-width: 480px) {
+            .ad-wrapper-mobile {
+                 /* Ganti ke 320x50 jika 468x60 terlalu besar */
+                 /* Untuk saat ini, kita biarkan 468x60, atau bisa diganti dengan script 320x50 */
+                 max-width: 320px; 
+                 min-height: 50px;
+            }
+         }
+
+    </style>
+    <!-- ========================================= -->
+    <!-- === AKHIR CSS IKLAN === -->
+    <!-- ========================================= -->
 </head>
 <body class="light">
+    
+    <!-- =================================== -->
+    <!-- === AWAL IKLAN INTERSTITIAL (BARU) === -->
+    <!-- =================================== -->
+    <div id="interstitial-backdrop"></div>
+    <div id="interstitial-ad">
+        <div id="interstitial-close" title="Tutup Iklan">&times;</div>
+        <!-- Script Iklan 300x250 ditempatkan di sini -->
+        <script type="text/javascript">
+            atOptions = {
+                'key' : '8e4e1ac5df43b151b8dd6ef0cd42fe71',
+                'format' : 'iframe',
+                'height' : 250,
+                'width' : 300,
+                'params' : {}
+            };
+        </script>
+        <script type="text/javascript" src="//librarysituation.com/8e4e1ac5df43b151b8dd6ef0cd42fe71/invoke.js"></script>
+    </div>
+    <!-- ================================= -->
+    <!-- === AKHIR IKLAN INTERSTITIAL === -->
+    <!-- ================================= -->
+
+
     <!-- Background Orbs -->
     <div class="background-orbs">
         <div class="orb orb-1"></div>
@@ -870,6 +1001,41 @@
 
     <!-- Main Container -->
     <div class="container">
+
+        <!-- ======================================================= -->
+        <!-- === AWAL IKLAN BANNER (728x90 & 468x60 - RESPONSIVE) === -->
+        <!-- ======================================================= -->
+        <!-- Tampil di Desktop (lebar > 768px) -->
+        <div class="ad-wrapper-desktop">
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : '1f1212122ae44522bc4abbeb1ad0abce',
+                    'format' : 'iframe',
+                    'height' : 90,
+                    'width' : 728,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="//librarysituation.com/1f1212122ae44522bc4abbeb1ad0abce/invoke.js"></script>
+        </div>
+         <!-- Tampil di Mobile (lebar <= 768px) -->
+        <div class="ad-wrapper-mobile">
+             <script type="text/javascript">
+                atOptions = {
+                    'key' : '48a6237fd7b5b13707b018c00863df2c',
+                    'format' : 'iframe',
+                    'height' : 60,
+                    'width' : 468,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="//librarysituation.com/48a6237fd7b5b13707b018c00863df2c/invoke.js"></script>
+        </div>
+        <!-- ================================= -->
+        <!-- === AKHIR IKLAN BANNER === -->
+        <!-- ================================= -->
+
+
         <div class="card">
             <!-- Header -->
             <div class="header">
@@ -970,6 +1136,17 @@
                     <span>Buat Stiker</span>
                 </button>
 
+                <!-- =================================== -->
+                <!-- === AWAL IKLAN NATIVE BANNER === -->
+                <!-- =================================== -->
+                <div style="margin: 24px 0; text-align: center;">
+                    <script async="async" data-cfasync="false" src="//librarysituation.com/5f00c9da5dc7e0af9b57e9a902c7fce8/invoke.js"></script>
+                    <div id="container-5f00c9da5dc7e0af9b57e9a902c7fce8"></div>
+                </div>
+                <!-- ================================= -->
+                <!-- === AKHIR IKLAN NATIVE BANNER === -->
+                <!-- ================================= -->
+
                 <!-- Loading State -->
                 <div class="loading-state" id="loadingState">
                     <div class="loading-spinner"></div>
@@ -991,11 +1168,53 @@
                         <span>Unduh Stiker</span>
                     </button>
                 </div>
+
+                <!-- =================================== -->
+                <!-- === AWAL IKLAN BANNER (320x50) === -->
+                <!-- =================================== -->
+                <div style="width: 100%; max-width: 320px; margin: 24px auto 0; text-align: center; min-height: 50px;">
+                    <script type="text/javascript">
+                        atOptions = {
+                            'key' : '555386af8ec873bba9bf91da7cf0be72',
+                            'format' : 'iframe',
+                            'height' : 50,
+                            'width' : 320,
+                            'params' : {}
+                        };
+                    </script>
+                    <script type="text/javascript" src="//librarysituation.com/555386af8ec873bba9bf91da7cf0be72/invoke.js"></script>
+                </div>
+                <!-- ================================= -->
+                <!-- === AKHIR IKLAN BANNER (320x50) === -->
+                <!-- ================================= -->
+
             </div>
         </div>
     </div>
 
-    <!-- Script untuk Brat Generator -->
+    <!--
+    ==================================================================
+    CATATAN UNTUK IKLAN SKYSCRAPER (160x300 & 160x600):
+    Layout website ini adalah satu kolom di tengah (max-width: 520px).
+    Iklan skyscraper (seperti 160x600) dirancang untuk "sidebar" (kolom samping).
+    
+    Untuk menambahkan iklan ini, Anda perlu mengubah struktur HTML/CSS website
+    untuk memiliki layout dengan sidebar, misalnya:
+    
+    <div style="display: flex; max-width: 1000px; margin: 0 auto;">
+        <div class="sidebar-kiri" style="width: 160px; margin-right: 20px; padding-top: 100px;">
+            <!-- SCRIPT IKLAN 160x600 DI SINI -->
+            <script type="text/javascript">
+                atOptions = { 'key' : '59cf4f8d4b7986047c257097a2960327', 'format' : 'iframe', 'height' : 600, 'width' : 160, 'params' : {} };
+            </script>
+            <script type="text/javascript" src="//librarysituation.com/59cf4f8d4b7986047c257097a2960327/invoke.js"></script>
+        </div>
+        <div class="konten-utama" style="flex: 1;">
+            <!-- ... Konten .container Anda ... -->
+        </div>
+    </div>
+
+    <!-- Script untuk Brat Generator (ASLI) -->
     <script>
         // Mapping untuk warna yang mungkin perlu penyesuaian untuk API jika API tidak langsung mengenali nama warna Tailwind
         const colorMappingForAPI = {
@@ -1167,7 +1386,7 @@
         });
     </script>
 
-    <!-- Script untuk Watermark (DISISIPKAN) -->
+    <!-- Script untuk Watermark (ASLI) -->
     <script>
     (function() {
         function initializeWatermark() {
@@ -1303,5 +1522,71 @@
         }
     })();
     </script>
+
+
+    <!-- =============================================================== -->
+    <!-- === AWAL SCRIPT IKLAN (Interstitial, Popunder, Social Bar) === -->
+    <!-- =============================================================== -->
+
+    <!-- Popunder (Sekali per sesi, script akan mengaturnya) -->
+    <script type='text/javascript' src='//librarysituation.com/bf/b8/13/bfb8136fec9e1e1271b2f3fedad87d12.js'></script>
+
+    <!-- Social Bar (Floating, script akan mengaturnya) -->
+    <script type='text/javascript' src='//librarysituation.com/71/d7/0d/71d70df99010fe51fd0ccaed115d379c.js'></script>
+
+    <!-- Script untuk Interstitial Ad (Custom JS) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cek apakah ini di perangkat mobile
+            const isMobile = window.innerWidth <= 768;
+            
+            // Hanya jalankan Interstitial jika di mobile (opsional, bisa dihapus jika ingin di desktop juga)
+            // if (!isMobile) {
+            //     console.log('Interstitial Ad dilewati (hanya mobile).');
+            //     return;
+            // }
+
+            const backdrop = document.getElementById('interstitial-backdrop');
+            const adModal = document.getElementById('interstitial-ad');
+            const closeButton = document.getElementById('interstitial-close');
+
+            // 1. Cek sessionStorage
+            const adShown = sessionStorage.getItem('interstitialAdShown');
+            
+            // Jika belum pernah ditampilkan di sesi ini
+            if (!adShown) {
+                // 2. Tampilkan iklan setelah 1 detik (memberi waktu user melihat halaman)
+                setTimeout(function() {
+                    if (backdrop && adModal) {
+                        backdrop.classList.add('active');
+                        adModal.classList.add('active');
+                        
+                        // 3. Set flag di sessionStorage agar tidak muncul lagi
+                        sessionStorage.setItem('interstitialAdShown', 'true');
+                    }
+                }, 1000); // Tunda 1 detik
+            }
+
+            // 4. Logika untuk menutup iklan
+            function closeAd() {
+                if (backdrop && adModal) {
+                    backdrop.classList.remove('active');
+                    adModal.classList.remove('active');
+                }
+            }
+
+            // Tambahkan event listener ke tombol 'X' dan backdrop
+            if (closeButton) {
+                closeButton.addEventListener('click', closeAd);
+            }
+            if (backdrop) {
+                backdrop.addEventListener('click', closeAd); // Bisa ditutup dgn klik backdrop
+            }
+        });
+    </script>
+    <!-- ========================================= -->
+    <!-- === AKHIR SCRIPT IKLAN === -->
+    <!-- ========================================= -->
+
 </body>
 </html>
